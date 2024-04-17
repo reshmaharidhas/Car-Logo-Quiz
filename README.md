@@ -12,6 +12,7 @@ If you are a car enthusiast or interested in automobile brands, you should try t
 
 ## Development Tools💻
 - PyCharm
+- PyInstaller
 
 ## Features🚘
 - Logos displayed in random order always
