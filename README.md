@@ -13,7 +13,7 @@ If you are a car enthusiast or interested in automobile brands, you should try t
 ## Development Tools💻
 - PyCharm
 
-## Features
+## Features🚘
 - Logos displayed in random order always
 - Text on buttons displayed randomly for every logo displayed
 - Points increased and displayed on every correct answer 
@@ -37,3 +37,24 @@ If you are a car enthusiast or interested in automobile brands, you should try t
 - Double click on the .exe file to run and play the guessing game.
 
 ## Screenshots💻
+![screenshot3](https://github.com/reshmaharidhas/Car-Logo-Quiz/assets/37250413/52f0c327-a9ca-4982-a29f-11121844e048)
+Showcasing correct answer chosen by player by highlighting button in green background. Towards the left is the changing score.
+
+![screenshot4](https://github.com/reshmaharidhas/Car-Logo-Quiz/assets/37250413/14b432d1-cd7d-488f-b5e0-522e27078e6a)
+Showcasing the wrong answer chosen by player by highlighting button in red background and also the correct answer in green color.
+
+![screenshot2](https://github.com/reshmaharidhas/Car-Logo-Quiz/assets/37250413/c85778e2-8f27-43b9-a580-94efabd3c884)
+Showcasing the total score of player when the game ends 
+
+## Installation🔌
+```bash
+  $ git clone https://github.com/reshmaharidhas/Car-Logo-Quiz
+```
+```bash
+  $ cd Car-Logo-Quiz
+```
+```bash
+  $ python3 carlogoquiz.py
+```
+## License
+This project is licensed under the MIT License.
