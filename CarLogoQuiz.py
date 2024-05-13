@@ -14,6 +14,7 @@ class CarLogoQuiz:
         self.window = tk.Tk()
         # Dimension of the GUI window
         self.window.geometry("1200x600")
+        self.window.minsize(width=1200, height=600)
         # Title on the title bar of the GUI window
         self.window.title("Car Logo Quiz")
         # Setting the background color of master container 'window' to pale cream yellow color.
