@@ -1,94 +1,61 @@
 import tkinter as tk
 import random
 from threading import *
-import vehicleBrandPhotoImages as vehicleIcons
 from tkinter import messagebox
-from playsound import playsound
+from pygame import mixer
+import carBrandLogoImages as cb
 
 class CarLogoQuiz:
     score = 0
-    buttonSelected = 0
     shuffled = []
     brandNameNow = ""
     def __init__(self):
         self.window = tk.Tk()
         # Dimension of the GUI window
-        self.window.geometry("1200x600")
-        self.window.minsize(width=1200, height=600)
+        self.window.geometry("1200x800")
+        self.window.minsize(width=1200, height=800)
         # Title on the title bar of the GUI window
         self.window.title("Car Logo Quiz")
         # Setting the background color of master container 'window' to pale cream yellow color.
         self.window.config(bg="#f9faaf")
-        # icons in base64 are converted to PhotoImage
-        self.coins = tk.PhotoImage(data=vehicleIcons.coinsIcon)
-        self.nextButtonIcon = tk.PhotoImage(data=vehicleIcons.nextButtonLogo)
-        self.carLogoQuizPhoto = tk.PhotoImage(data=vehicleIcons.carLogoQuizIcon)
-        # brand logos in bas64 are converted to PhotoImage
-        self.audiPhoto = tk.PhotoImage(data=vehicleIcons.audiIcon)
-        self.ferrariPhoto = tk.PhotoImage(data=vehicleIcons.ferrariIcon)
-        self.mercedesPhoto = tk.PhotoImage(data=vehicleIcons.mercedesIcon)
-        self.lamborghiniPhoto = tk.PhotoImage(data=vehicleIcons.lamborghiniIcon)
-        self.rollsRoycePhoto = tk.PhotoImage(data=vehicleIcons.rollsRoyceIcon)
-        self.hyundaiPhoto = tk.PhotoImage(data=vehicleIcons.hyundaiIcon)
-        self.hondaPhoto = tk.PhotoImage(data=vehicleIcons.hondaIcon)
-        self.bmwPhoto = tk.PhotoImage(data=vehicleIcons.bmwLogo)
-        self.bentleyPhoto = tk.PhotoImage(data=vehicleIcons.bentleyIcon)
-        self.bugattiPhoto = tk.PhotoImage(data=vehicleIcons.bugattiIcon)
-        self.yamahaPhoto = tk.PhotoImage(data=vehicleIcons.yamahaIcon)
-        self.suzukiPhoto = tk.PhotoImage(data=vehicleIcons.suzukiIcon)
-        self.astonMartinPhoto = tk.PhotoImage(data=vehicleIcons.astonMartinIcon)
-        self.acuraPhoto = tk.PhotoImage(data=vehicleIcons.acuraLogo)
-        self.fordPhoto = tk.PhotoImage(data=vehicleIcons.fordLogo)
-        self.bydPhoto = tk.PhotoImage(data=vehicleIcons.bydLogo)
-        self.cadillacPhoto = tk.PhotoImage(data=vehicleIcons.cadillacLogo)
-        self.chevroletPhoto = tk.PhotoImage(data=vehicleIcons.chevroletLogo)
-        self.citroenPhoto = tk.PhotoImage(data=vehicleIcons.citroenLogo)
-        self.fiatPhoto = tk.PhotoImage(data=vehicleIcons.fiatLogo)
-        self.renaultPhoto = tk.PhotoImage(data=vehicleIcons.renaultLogo)
-        self.kiaPhoto = tk.PhotoImage(data=vehicleIcons.kiaLogo)
-        self.jeepPhoto = tk.PhotoImage(data=vehicleIcons.jeepLogo)
-        self.landRoverPhoto = tk.PhotoImage(data=vehicleIcons.landRoverLogo)
-        self.lexusPhoto = tk.PhotoImage(data=vehicleIcons.lexusLogo)
-        self.maseratiPhoto = tk.PhotoImage(data=vehicleIcons.maseratiLogo)
-        self.lincolnPhoto = tk.PhotoImage(data=vehicleIcons.lincolnLogo)
-        self.volvoPhoto = tk.PhotoImage(data=vehicleIcons.volvoLogo)
-        self.mazdaPhoto = tk.PhotoImage(data=vehicleIcons.mazdaLogo)
-        self.nissanPhoto = tk.PhotoImage(data=vehicleIcons.nissanLogo)
-        self.peugeotPhoto = tk.PhotoImage(data=vehicleIcons.peugeotLogo)
-        self.pontiacPhoto = tk.PhotoImage(data=vehicleIcons.pontiacLogo)
-        self.porschePhoto = tk.PhotoImage(data=vehicleIcons.porscheLogo)
-        self.teslaPhoto = tk.PhotoImage(data=vehicleIcons.teslaLogo)
-        self.maybachPhoto = tk.PhotoImage(data=vehicleIcons.maybachLogo)
-        self.mahindraPhoto = tk.PhotoImage(data=vehicleIcons.mahindraLogo)
-        self.volkswagenPhoto = tk.PhotoImage(data=vehicleIcons.volkswagenLogo)
-        self.apolloAutomobilPhoto = tk.PhotoImage(data=vehicleIcons.apolloAutomobilLogo)
-        self.ligierPhoto = tk.PhotoImage(data=vehicleIcons.ligierLogo)
-        self.subaruPhoto = tk.PhotoImage(data=vehicleIcons.subaruLogo)
-        self.mitsubishiPhoto = tk.PhotoImage(data=vehicleIcons.mitsubishiLogo)
+        self.buttonSelected = 0
+        # icons are converted to PhotoImage
+        self.coins = tk.PhotoImage(file="assets/images/ui/coins.png")
+        self.nextButtonIcon = tk.PhotoImage(file="assets/images/ui/next-50.png")
+        self.carLogoQuizPhoto = tk.PhotoImage(file="assets/images/ui/carlogoquiz_icon.png")
         # brand names list
         self.brandNamesList = ["Audi", "Lamborghini", "Ferrari", "Mercedes", "Rolls Royce", "Hyundai", "Honda", "BMW", "Bentley", "Bugatti",
                                "Yamaha", "Suzuki", "Aston Martin", "Acura", "Ford", "BYD", "Cadillac", "Chevrolet", "Citroen", "Fiat",
                                "Renault", "Kia", "Jeep", "Land Rover", "Lexus", "Maserati", "Lincoln", "Volvo", "Mazda", "Nissan", "Peugeot",
                                "Pontiac", "Porsche", "Tesla", "Maybach", "Mahindra", "Volkswagen", "Apollo Automobil", "Ligier", "Subaru",
-                               "Mitsubishi"]
+                               "Mitsubishi","Toyota","Alfa","Opel","Skoda","Chrysler","McLaren","Saab","Lotus","General Motors",
+                               "Buick","Koenigsegg","Dacia","Geely","Rossion","Dodge"]
         # Copy of list 'brandNamesList' to help in creating choice buttons randomly
         self.copyBrandNamesList = self.brandNamesList.copy()
         # dictionary. Elements of dictionary in same order as in brandNamesList mapping to its PhotoImage variable.
-        self.logoBrandnameMap = {"Audi": self.audiPhoto,"Lamborghini": self.lamborghiniPhoto,
-                    "Ferrari": self.ferrariPhoto, "Mercedes": self.mercedesPhoto,"Rolls Royce": self.rollsRoycePhoto,
-                                 "Hyundai": self.hyundaiPhoto, "Honda": self.hondaPhoto, "BMW": self.bmwPhoto,
-                                 "Bentley": self.bentleyPhoto, "Bugatti": self.bugattiPhoto,
-                                 "Yamaha": self.yamahaPhoto,
-                                 "Suzuki": self.suzukiPhoto, "Aston Martin": self.astonMartinPhoto,
-                                 "Acura": self.acuraPhoto, "Ford": self.fordPhoto, "BYD": self.bydPhoto, "Cadillac": self.cadillacPhoto,
-                                 "Chevrolet": self.chevroletPhoto, "Citroen": self.citroenPhoto, "Fiat": self.fiatPhoto,
-                                 "Renault": self.renaultPhoto, "Kia": self.kiaPhoto, "Jeep": self.jeepPhoto, "Land Rover": self.landRoverPhoto,
-                                 "Lexus": self.lexusPhoto, "Maserati": self.maseratiPhoto, "Lincoln": self.lincolnPhoto,
-                                 "Volvo": self.volvoPhoto, "Mazda": self.mazdaPhoto, "Nissan": self.nissanPhoto, "Peugeot": self.peugeotPhoto,
-                                 "Pontiac": self.pontiacPhoto, "Porsche": self.porschePhoto, "Tesla": self.teslaPhoto,
-                                 "Maybach": self.maybachPhoto, "Mahindra": self.mahindraPhoto, "Volkswagen": self.volkswagenPhoto,
-                                 "Apollo Automobil": self.apolloAutomobilPhoto, "Ligier": self.ligierPhoto, "Subaru": self.subaruPhoto,
-                                 "Mitsubishi": self.mitsubishiPhoto}
+        self.logoBrandnameMap = {"Audi":cb.loadAudi(),"Lamborghini":cb.loadLamborghini(),
+                    "Ferrari": cb.load_ferrari(), "Mercedes": cb.load_mercedes(),"Rolls Royce": cb.load_rolls_royce(),
+                                 "Hyundai": cb.load_hyundai(), "Honda": cb.load_honda(), "BMW": cb.load_bmw(),
+                                 "Bentley": cb.load_bentley(), "Bugatti": cb.load_bugatti(),
+                                 "Yamaha": cb.load_yamaha(),
+                                 "Suzuki": cb.load_suzuki(), "Aston Martin": cb.load_astonmartin(),
+                                 "Acura": cb.load_acura(), "Ford": cb.load_ford(), "BYD": cb.load_byd(),
+                                 "Cadillac": cb.load_cadillac(),
+                                 "Chevrolet": cb.load_chevrolet(), "Citroen": cb.load_citroen(), "Fiat": cb.load_fiat(),
+                                 "Renault": cb.load_renault(), "Kia":cb.load_kia(), "Jeep":cb.load_jeep(),
+                                 "Land Rover": cb.load_landrover(),
+                                 "Lexus": cb.load_lexus(), "Maserati": cb.load_maserati(), "Lincoln": cb.load_lincoln(),
+                                 "Volvo": cb.load_volvo(), "Mazda": cb.load_mazda(), "Nissan": cb.load_nissan(),
+                                 "Peugeot":cb.load_peugeot(),
+                                 "Pontiac": cb.load_pontiac(), "Porsche": cb.load_porsche(), "Tesla": cb.load_tesla(),
+                                 "Maybach": cb.load_maybach(), "Mahindra": cb.load_mahindra(), "Volkswagen": cb.load_volkswagen(),
+                                 "Apollo Automobil": cb.load_apollo_automobil(), "Ligier": cb.load_ligier(),
+                                 "Subaru": cb.load_subaru(),"Mitsubishi": cb.load_mitsubishi(),
+                                 "Toyota":cb.load_toyota(),"Alfa":cb.load_alfa(),"Opel":cb.load_opel(),"Skoda":cb.load_skoda(),
+                                 "Chrysler":cb.load_chrysler(),"McLaren":cb.load_mclaren(),"Saab":cb.load_saab(),
+                                 "Lotus":cb.load_lotus(),"General Motors":cb.load_general_motors(),"Buick":cb.load_buick(),
+                                 "Koenigsegg":cb.load_koenigsegg(),"Dacia":cb.load_dacia(),"Geely":cb.load_geely(),
+                                 "Rossion":cb.load_rossion(),"Dodge":cb.load_dodge()}
         # Create a frame 'frame1' which hold three frames in it.
         self.frame1 = tk.Frame(self.window,bg="#f9faaf")
         self.frame1.pack(pady=40)
@@ -113,7 +80,7 @@ class CarLogoQuiz:
         self.nextButton = tk.Button(self.frameCenter,text="Next", command=self.threading, font=("Monotype Corsiva",20), bg="#BEA4F1", cursor="heart",image=self.nextButtonIcon,compound=tk.LEFT,padx=10)
         self.nextButton.pack(side=tk.BOTTOM)
         # exit button
-        self.exitButton = tk.Button(self.frameRight, text="EXIT GAME", command=self.window.destroy, bg="red", fg="black",relief=tk.RAISED,bd=5,font=("Helvetica",14))
+        self.exitButton = tk.Button(self.frameRight, text="EXIT GAME", command=self.quit_game, bg="red", fg="black",relief=tk.RAISED,bd=5,font=("Helvetica",14))
         self.exitButton.pack(padx=40)
         # score displaying Label
         self.scoreLabel = tk.Label(self.frameLeft,text="Score:0 ", font=("Helvetica",16,"bold"), compound=tk.RIGHT, image=self.coins, bg="#f9faaf",fg="blue")
@@ -147,9 +114,11 @@ class CarLogoQuiz:
     # Function to change next picture in canvas along with different texts on 4 buttons
     def nextPicture(self):
         global buttonSelected
+        # play the clicking sound
+        self.thread_play_click_sound()
         # Initially when a new brand logo is appeared on Canvas, the player has not clicked any buttons yet.
         # So the variable 'buttonSelected' is initialized to 0
-        buttonSelected = 0
+        self.buttonSelected = 0
         # Reset the background color of all 4 choice buttons to skyblue
         self.changeBtn1BgColor("skyblue")
         self.changeBtn2BgColor("skyblue")
@@ -192,6 +161,7 @@ class CarLogoQuiz:
 
         else:
             # Display to player GAME OVER with score. All Logos answered.
+            self.thread_play_game_level_completed_sound()
             finalScore = f"Your SCORE is {str(self.score)}"
             messagebox.showinfo("GAME OVER",finalScore)
             self.disableChoicesButtons()
@@ -203,9 +173,39 @@ class CarLogoQuiz:
         t1 = Thread(target=self.nextPicture)
         t1.start()
 
-    # Function to play the winning sound when user submits ccorrect answer for logo
+    # Function to play the winning sound when user submits correct answer for logo
     def playAudio(self):
-        playsound("mixkit-instant-win-2021.wav", block=True)
+        mixer.init()
+        mixer.music.load("assets/sound_effects/mixkit-instant-win-2021.wav")
+        mixer.music.set_volume(0.8)
+        mixer.music.play()
+
+    # Function to play the clicking sound on clicking buttons in the GUI
+    def play_click_sound(self):
+        mixer.init()
+        mixer.music.load("assets/sound_effects/mixkit-classic-click-1117.wav")
+        mixer.music.set_volume(0.8)
+        mixer.music.play()
+    def thread_play_click_sound(self):
+        thread_var = Thread(target=self.play_click_sound())
+        thread_var.start()
+    # Function to play the wrong answer buzzer sound
+    def play_wrong_answer_sound(self):
+        mixer.init()
+        mixer.music.load("assets/sound_effects/mixkit-game-show-wrong-answer-buzz-950.wav")
+        mixer.music.set_volume(0.8)
+        mixer.music.play()
+    def thread_play_wrong_answer_sound(self):
+        thread_var = Thread(target=self.play_wrong_answer_sound())
+        thread_var.start()
+    def play_game_completed_sound(self):
+        mixer.init()
+        mixer.music.load("assets/sound_effects/mixkit-completion-of-a-level-2063.wav")
+        mixer.music.set_volume(0.8)
+        mixer.music.play()
+    def thread_play_game_level_completed_sound(self):
+        thread_var = Thread(target=self.play_game_completed_sound())
+        thread_var.start()
 
     # Function to create 3 random choices in the 4 buttons when a logo appears.
     # One of the 4 random choices has correct brand passed through parameter 'brandName'
@@ -229,82 +229,91 @@ class CarLogoQuiz:
     # Function to analyse the button selected by user among the 4 buttons.
     def getSelected(self):
         global buttonSelected,brandNameNow,shuffled
-        '''Activate the Next button now because for the image displaying in the Canvas, the choice 
-        has been submitted by clicking 'Submit' button. Because of that this function is called now.'''
-        self.nextButton.config(state=tk.NORMAL)
-        # Disable the Submit button because the submit  button has been clicked just now.
-        self.submit.config(state=tk.DISABLED)
+        self.thread_play_click_sound()
         # Index at which the correct answer given 'brandNameNow' is present in array 'shuffled' is assigned to
         # variable 'correctAnswerIndex'
         correctAnswerIndex = shuffled.index(brandNameNow)
-        # If player clicked correct answer
-        if shuffled[buttonSelected-1]==brandNameNow:
-            # Increment the score of player
-            self.score += 1
-            # Play winning sound by creating a new separate thread
-            audio_thread = Thread(target=self.playAudio)
-            audio_thread.start()
+        if self.buttonSelected!=0:
+            '''Activate the Next button now because for the image displaying in the Canvas, the choice 
+                    has been submitted by clicking 'Submit' button. Because of that this function is called now.'''
+            self.nextButton.config(state=tk.NORMAL)
+            # Disable the Submit button because the submit  button has been clicked just now.
+            self.submit.config(state=tk.DISABLED)
+            # If player clicked correct answer
+            if shuffled[self.buttonSelected-1]==brandNameNow:
+                # Increment the score of player
+                self.score += 1
+                # Play winning sound by creating a new separate thread
+                audio_thread = Thread(target=self.playAudio)
+                audio_thread.start()
+            else:
+                # If player clicked WRONG button as answer.
+                self.thread_play_wrong_answer_sound()
+                # Find the index of the wrong button selected by player. Assign it as 'wrongAnswerIndex'.
+                wrongAnswerIndex = self.buttonSelected-1
+                # Change the background color of the wrong button clicked by player to red.
+                # If the 'wrongAnswerIndex' is 0, player clicked btn1. Change its background color to red, text color to white.
+                # If the 'wrongAnswerIndex' is 1, player clicked btn2. Change its background color to red, text color to white.
+                # If the 'wrongAnswerIndex' is 2, player clicked btn3. Change its background color to red, text color to white.
+                # If the 'wrongAnswerIndex' is 3, player clicked btn4. Change its background color to red., text color to white.
+                if wrongAnswerIndex == 0:
+                    self.changeBtn1BgColor("red")
+                    self.changeBtn1FgColor("white")
+                elif wrongAnswerIndex == 1:
+                    self.changeBtn2BgColor("red")
+                    self.changeBtn2FgColor("white")
+                elif wrongAnswerIndex == 2:
+                    self.changeBtn3BgColor("red")
+                    self.changeBtn3FgColor("white")
+                elif wrongAnswerIndex == 3:
+                    self.changeBtn4BgColor("red")
+                    self.changeBtn4FgColor("white")
+            # Display the button having the correct answer by changing that button's background color to GREEN hex color '#51f01d'.
+            # If the correctAnswerIndex is 0, the button 'btn1' is having the correct answer.
+            # If the correctAnswerIndex is 1, the button 'btn2' is having the correct answer.
+            # If the correctAnswerIndex is 2, the button 'btn3' is having the correct answer.
+            # If the correctAnswerIndex is 3, the button 'btn4' is having the correct answer.
+            if correctAnswerIndex==0:
+                self.changeBtn1BgColor("#51f01d")
+            elif correctAnswerIndex==1:
+                self.changeBtn2BgColor("#51f01d")
+            elif correctAnswerIndex==2:
+                self.changeBtn3BgColor("#51f01d")
+            elif correctAnswerIndex==3:
+                self.changeBtn4BgColor("#51f01d")
+            # Update the latest score of player in the Label 'scoreLabel'
+            ans = "Score:"+str(self.score)+" "
+            self.scoreLabel.config(text=ans)
         else:
-            # If player clicked WRONG button as answer.
-            # Find the index of the wrong button selected by player. Assign it as 'wrongAnswerIndex'.
-            wrongAnswerIndex = buttonSelected-1
-            # Change the background color of the wrong button clicked by player to red.
-            # If the 'wrongAnswerIndex' is 0, player clicked btn1. Change its background color to red, text color to white.
-            # If the 'wrongAnswerIndex' is 1, player clicked btn2. Change its background color to red, text color to white.
-            # If the 'wrongAnswerIndex' is 2, player clicked btn3. Change its background color to red, text color to white.
-            # If the 'wrongAnswerIndex' is 3, player clicked btn4. Change its background color to red., text color to white.
-            if wrongAnswerIndex == 0:
-                self.changeBtn1BgColor("red")
-                self.changeBtn1FgColor("white")
-            elif wrongAnswerIndex == 1:
-                self.changeBtn2BgColor("red")
-                self.changeBtn2FgColor("white")
-            elif wrongAnswerIndex == 2:
-                self.changeBtn3BgColor("red")
-                self.changeBtn3FgColor("white")
-            elif wrongAnswerIndex == 3:
-                self.changeBtn4BgColor("red")
-                self.changeBtn4FgColor("white")
-        # Display the button having the correct answer by changing that button's background color to GREEN hex color '#51f01d'.
-        # If the correctAnswerIndex is 0, the button 'btn1' is having the correct answer.
-        # If the correctAnswerIndex is 1, the button 'btn2' is having the correct answer.
-        # If the correctAnswerIndex is 2, the button 'btn3' is having the correct answer.
-        # If the correctAnswerIndex is 3, the button 'btn4' is having the correct answer.
-        if correctAnswerIndex==0:
-            self.changeBtn1BgColor("#51f01d")
-        elif correctAnswerIndex==1:
-            self.changeBtn2BgColor("#51f01d")
-        elif correctAnswerIndex==2:
-            self.changeBtn3BgColor("#51f01d")
-        elif correctAnswerIndex==3:
-            self.changeBtn4BgColor("#51f01d")
-        # Update the latest score of player in the Label 'scoreLabel'
-        ans = "Score:"+str(self.score)+" "
-        self.scoreLabel.config(text=ans)
+            messagebox.showinfo("Select","Choose any answer before submitting")
 
     # Function to perform event when button 'btn1' is clicked
     def button1(self):
         global buttonSelected
+        self.thread_play_click_sound()
         # change the value of variable 'buttonSelected' to 1 indicating player recently clicked button 'btn1'.
-        buttonSelected = 1
+        self.buttonSelected = 1
 
     # Function to perform event when button 'btn2' is clicked
     def button2(self):
         global buttonSelected
+        self.thread_play_click_sound()
         # change the value of variable 'buttonSelected' to 2 indicating player recently clicked button 'btn2'.
-        buttonSelected = 2
+        self.buttonSelected = 2
 
     # Function to perform event when button 'btn3' is clicked
     def button3(self):
         global buttonSelected
+        self.thread_play_click_sound()
         # change the value of variable 'buttonSelected' to 3 indicating player recently clicked button 'btn3'.
-        buttonSelected = 3
+        self.buttonSelected = 3
 
     # Function to perform event when button 'btn4' is clicked
     def button4(self):
         global buttonSelected
+        self.thread_play_click_sound()
         # change the value of variable 'buttonSelected' to 4 indicating player recently clicked button 'btn4'.
-        buttonSelected = 4
+        self.buttonSelected = 4
 
     # Function to change the state of Next button to DISABLED
     def disableNextButton(self):
@@ -360,6 +369,11 @@ class CarLogoQuiz:
     # Function to change the foreground color of button 'btn4' by given color variable 'colorName'.
     def changeBtn4FgColor(self,colorName):
         self.btn4.config(fg=colorName)
+
+    def quit_game(self):
+        self.thread_play_click_sound()
+        if messagebox.askyesno("Quit Game?","Do you really want to quit the game?")==True:
+            self.window.destroy()
 
 # Object created for class 'LogoQuiz'
 CarLogoQuiz()
