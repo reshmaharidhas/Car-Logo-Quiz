@@ -12,6 +12,9 @@ If you are a car enthusiast or interested in automobile brands, you should try t
 
 ## Programming Language
 - Python 3
+## Tech Stack
+- Tkinter (GUI)
+- Pygame (Audio library)
 
 ## Development Tools💻
 - PyCharm
