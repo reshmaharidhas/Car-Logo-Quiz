@@ -4,6 +4,7 @@
   <img src="https://img.shields.io/github/repo-size/reshmaharidhas/Car-Logo-Quiz"/>
   <img src="https://img.shields.io/github/languages/top/reshmaharidhas/Car-Logo-Quiz?labelColor=black"/>
   <img src="https://img.shields.io/github/v/release/reshmaharidhas/Car-Logo-Quiz"/>
+  <img src="https://img.shields.io/github/release-date/reshmaharidhas/Car-Logo-Quiz?labelColor=%23000000"/>
   <img src="https://img.shields.io/github/license/reshmaharidhas/Car-Logo-Quiz"/>
   <img src="https://img.shields.io/github/created-at/reshmaharidhas/Car-Logo-Quiz"/>
 </p>
