@@ -3,6 +3,7 @@
   <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Freshmaharidhas%2FCar-Logo-Quiz"><img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Freshmaharidhas%2FCar-Logo-Quiz&labelColor=%23000000&countColor=%2300ff00&style=plastic&labelStyle=lower" /></a>
   <img src="https://img.shields.io/github/repo-size/reshmaharidhas/Car-Logo-Quiz"/>
   <img src="https://img.shields.io/github/languages/top/reshmaharidhas/Car-Logo-Quiz?labelColor=black"/>
+  <img src="https://img.shields.io/github/downloads/reshmaharidhas/Car-Logo-Quiz/total?label=GitHub%20downloads&labelColor=%23000000&color=%23FF0000"/>
   <img src="https://img.shields.io/sourceforge/dt/car-logo-quiz?label=Sourceforge%20downloads&labelColor=%23000000&color=%230000FF" />
   <img src="https://img.shields.io/github/v/release/reshmaharidhas/Car-Logo-Quiz"/>
   <img src="https://img.shields.io/github/release-date/reshmaharidhas/Car-Logo-Quiz?labelColor=%23000000"/>
